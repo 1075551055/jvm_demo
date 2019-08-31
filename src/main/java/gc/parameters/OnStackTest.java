@@ -11,7 +11,7 @@ public class OnStackTest {
     }
 
     //栈上分配：jvm做的优化，就是把所有的没有逃逸（没有对外暴露的）的对象分配在栈上，随着栈桢（方法结束）的销毁而销毁，减少不必要的gc
-    // -server -Xmx10m -Xms10m -XX:DoEscapeAnalysis -XX:+PrintGC -XX:-UseTLAB -XX:+EliminateAllocations
+    // -server -Xmx10m -Xms10m -XX:+DoEscapeAnalysis -XX:+PrintGC -XX:-UseTLAB -XX:+EliminateAllocations
     //-XX:DoEscapeAnalysis开启逃逸分析，-XX:+EliminateAllocations开启标量替换（默认是开启的），栈上分配需要在server模式下，并且
     //逃逸分配和标量替换需要同时开启，否则不起作用
     public static void main(String[] args) throws InterruptedException {
