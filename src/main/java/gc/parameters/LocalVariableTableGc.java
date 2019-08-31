@@ -5,12 +5,12 @@ public class LocalVariableTableGc {
 //        localVar1();
 //        localVar2();
 //        localVar3();
-//        localVar4();
-        localVar5();
+        localVar4();
+//        localVar5();
     }
 
     // 以下所有方法都以printGC参数的结果来分析，不要受freeMemory API的值影响
-    // 使用-XX:+ DisableExplicitGC来禁止RMI调用System.gc产生minor gc,full gc,它会整理整个堆，包括新生代老年代
+    // 使用-XX:+ DisableExplicitGC来禁止RMI调用System.gc产生minor gc,full gc,它会整理整个堆，包括新生代老年代. 特别注意full gc会清空新生代
     // -Xms10m -Xmx10m -xx:+PrintGC
     public static void localVar1() {
         System.out.println(Runtime.getRuntime().freeMemory());
