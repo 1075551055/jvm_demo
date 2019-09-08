@@ -9,10 +9,11 @@ public class NewSizeDemo {
         //-Xmx20m -Xms20m -Xmn1m -XX:SurvivorRatio=2 -XX:+PrintGCDetails
 
 
-        // -XX:PretenureSizeThreshold=3
+        // -XX:PretenureSizeThreshold=3  设置年龄大小，达到该值就进入老年代。如果survivor区的同年龄对象已经等于或大于该区域的一半就算没达到年龄阈值也会进入老年代
         // java -XX:+PrintFlagsFinal -XX:NewSize=1k -version | grep NewSize     ===>jdk 8
+        // -XX:NewRatio 设置老年代/新生代的比例
         byte[] bytes = null;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             bytes = new byte[1 * 1024 * 1024];
         }
     }
