@@ -8,6 +8,7 @@ public class TestStackDeep {
         recursive();
     }
 
+    // -Xss160k -XX:+PrintFlagsFinal
     // -Xss160k  栈大小
     public static void main(String[] args) {
         try {

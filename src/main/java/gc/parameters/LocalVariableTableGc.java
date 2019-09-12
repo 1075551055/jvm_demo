@@ -5,28 +5,24 @@ public class LocalVariableTableGc {
 //        localVar1();
 //        localVar2();
 //        localVar3();
-        localVar4();
-//        localVar5();
+//        localVar4();
+        localVar5();
     }
 
     // 以下所有方法都以printGC参数的结果来分析，不要受freeMemory API的值影响
-    // 使用-XX:+ DisableExplicitGC来禁止RMI调用System.gc产生minor gc,full gc,它会整理整个堆，包括新生代老年代. 特别注意full gc会清空新生代
-    // -Xms10m -Xmx10m -xx:+PrintGC
+    // 使用-XX:+ DisableExplicitGC来禁止RMI调用System.gc产生minor gc,full gc,它是否会整理整个堆视不同的收集器行为不一样
+    // -Xms10m -Xmx10m -XX:+PrintGC
     public static void localVar1() {
-        System.out.println(Runtime.getRuntime().freeMemory());
-        // 调用gc方法后此块内存没有被回收，因为还在作用域内
+        // 调用gc方法后此块内存没有被回收，因为还在作用域内. a是gc root(虚拟机栈中的本地变量)，在这个作用域内这块new byte[6 * 1024 * 1024]内存与a并没有断开连接
         byte[] a = new byte[6 * 1024 * 1024];
         System.gc();
-        System.out.println(Runtime.getRuntime().freeMemory());
     }
 
     public static void localVar2() {
-        System.out.println(Runtime.getRuntime().freeMemory());
         // 调用gc方法后此块内存被回收，因为没有引用了，就是与GC root:a没有联系了，断开了连接关系
         byte[] a = new byte[6 * 1024 * 1024];
         a = null;
         System.gc();
-        System.out.println(Runtime.getRuntime().freeMemory());
     }
 
     public static void localVar3() {

@@ -13,8 +13,8 @@ public class NewSizeDemo {
         // java -XX:+PrintFlagsFinal -XX:NewSize=1k -version | grep NewSize     ===>jdk 8
         // -XX:NewRatio 设置老年代/新生代的比例
         byte[] bytes = null;
-        for (int i = 0; i < 10; i++) {
-            bytes = new byte[1 * 1024 * 1024];
+        for (int i = 0; i < 1; i++) {
+//            bytes = new byte[1 * 1024 * 1024];
         }
     }
 }
