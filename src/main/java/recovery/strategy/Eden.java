@@ -1,10 +1,16 @@
 package recovery.strategy;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Eden {
-    // -Xms10m -Xmx10m -Xmn6m -XX:SurvivorRatio=2 -XX:+PrintGCDetails
+    // -Xms10m -Xmx10m -Xmn8m -XX:SurvivorRatio=2 -XX:+PrintGCDetails -XX:+UseSerialGC
+    // SurvivorRatio = Eden/from = Eden/to
     public static void main(String[] args) {
-        for (int i = 0; i < 2; i++) {
-            byte[] bytes = new byte[1024 * 1024];
+        Map<Integer, byte[]> map = new HashMap<Integer, byte[]>();
+        // i<2的时候空间足够，3则空间不够，进行minor gc
+        for (int i = 0; i < 3; i++) {
+            map.put(i, new byte[1024 * 1024]);
         }
     }
 
@@ -21,6 +27,7 @@ public class Eden {
 //    class space    used 327K, capacity 388K, committed 512K, reserved 1048576K
 
     // gc日志分析：在第二次产生byte数组的时候，由于eden区无法容纳了（已经使用了2420k，再加上1024k就大于eden区了），所以此时进行了一次minor gc.
-    // 有1024k数据进入到了from区，所以39%空间被使用了。todo 为什么老年代区域used 8K呢？TLAB原因，可以通过参数-XX:-UseTLAB关闭TLAB ？
+    // 有1024k数据进入到了from区，所以39%空间被使用了。todo 为什么老年代区域used 8K呢？TLAB原因，可以通过参数-XX:-UseTLAB关闭TLAB (Parallel Scavenge收集器，不同收集器有
+    //  不同表现)？
 
 }

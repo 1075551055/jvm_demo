@@ -1,6 +1,8 @@
-package what.is.garbage;
+package gc.root;
 
 public class MethodAreaStaticProperties {
+    // 当properties = null，该成员内存可以被回收
+    private byte[] member = new byte[2 * 1024 * 1024];
     public static byte[] instance;
 
     public MethodAreaStaticProperties(String name) {

@@ -3,21 +3,29 @@ package recovery.strategy;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Old {
+public class OldBak {
+    // todo 为什么是分配到新生代而不是方法区？这不是常量池的内容吗
+//    private static final byte[] bytes1 = new byte[1024 * 1024];
+//    private static byte[] bytes2;
+//    private static byte[] bytes3;
+//    private static byte[] bytes4;
 
     private static final int _1M = 1024 * 1024;
 
     public static void main(String[] args) {
-        // 老年代gc
-        fullGc();
+//        fullGc();
+//        bytes1 = new byte[1024 * 1024];
+//        bytes2 = new byte[1024 * 1024];
+//        bytes3 = new byte[1024 * 1024];
+//        bytes4 = new byte[1024 * 1024];
 
         // 大对象
 //        bigObject();
 
-        //bigObject2(); x
+//        bigObject2();
 
         // 老年代内存担保机制
-//        guarantee();
+        guarantee();
 
         // 对象年龄阈值设置
 //        ageThreshold();
@@ -31,36 +39,42 @@ public class Old {
         // -Xms20m -Xmx20m -Xmn10m -XX:+PrintGCDetails -XX:SurvivorRatio=8 -XX:MaxTenuringThreshold=15 -XX:+UseSerialGC
         byte[] allocation1, allocation2, allocation3, allocation4;
         allocation1 = new byte[_1M / 4];
-        // allocation1, allocation2大于等于survivor空间一半
+        // allocation1, allocation2大于survivor空间一半
         allocation2 = new byte[_1M / 4];
         allocation3 = new byte[4 * _1M];
-        // 此处发生gc
         allocation4 = new byte[4 * _1M];
         allocation4 = null;
-        // 此处发生gc, 虽然MaxTenuringThreshold年龄是15，但是allocation1, allocation2大于等于survivor空间一半，所以进入老年代
         allocation4 = new byte[4 * _1M];
     }
 
     private static void ageThreshold() {
-        // 年龄 -Xms20m -Xmx20m -Xmn10m -XX:+UseSerialGC -XX:+PrintGCDetails -XX:SurvivorRatio=8 -XX:MaxTenuringThreshold=1
+        // 年龄 -verbose:gc -Xms20m -Xmx20m -Xmn10m -XX:+UseSerialGC -XX:+PrintGCDetails -XX:SurvivorRatio=8 -XX:MaxTenuringThreshold=1
         byte[] allocation1, allocation2, allocation3;
         allocation1 = new byte[_1M / 4];
         allocation2 = new byte[4 * _1M];
-        // 此处发生gc， allocation1被拷贝到from survivor区，allocation2则由于survivor区装不下进入到老年代
         allocation3 = new byte[4 * _1M];
         allocation3 = null;
-        // 此处发生gc，由于MaxTenuringThreshold年龄设置了为1，allocation1进入老年代
         allocation3 = new byte[4 * _1M];
 
     }
 
     private static void guarantee() {
-        // -Xms20m -Xmx20m -Xmn10m -XX:+PrintGCDetails -XX:SurvivorRatio=8
+//        // 年龄 -verbose:gc -Xms20m -Xmx20m -Xmn10m -XX:+PrintGCDetails -XX:SurvivorRatio=8 -XX:MaxTenuringThreshold=1 -XX:+PrintTenuringDistribution
+//        byte[] allocation1, allocation2, allocation3;
+//        allocation1 = new byte[_1M / 4];
+//        allocation2 = new byte[_1M * 4];
+//        // allocation3, allocation4会被分配到老年代，因为新生代没有足够空间(新生代没有足够空间放对象的时候是不会进行minor gc的)，老年代有足够空间担保（Parallel scavenge收集器
+//        // 的表现，如果是serial收集器则会产生两次GC）
+//        allocation3 = new byte[_1M * 4];
+//        allocation3 = null;
+//        allocation3 = new byte[4 * _1M];
+
+
         byte[] b = new byte[8 * _1M];
     }
 
     private static void bigObject() {
-        // -Xms10m -Xmx10m -Xmn6m -XX:SurvivorRatio=2 -XX:+PrintGCDetails -XX:PretenureSizeThreshold=1048576 -XX:+UseSerialGC
+        // -Xms10m -Xmx10m -Xmn6m -XX:SurvivorRatio=2 -XX:+PrintGCDetails -XX:PretenureSizeThreshold=1048576 -XX:+UseParNewGC
         // PretenureSizeThreshold参数对于Parallel Scavenge收集器不起作用， 1048576是字节数
         // 会被移动到老年代
         byte[] obj = new byte[1 * _1M];
@@ -80,14 +94,12 @@ public class Old {
 
     private static void fullGc() {
         // -Xms10m -Xmx10m -Xmn2m -XX:+UseSerialGC -XX:+PrintGCDetails
-        // gc日志中的[GC,[Full GC代表的是日志收集停顿的类型,有Full代表stop-the-world，而不是新生代或者老年代的垃圾收集。平常所说的minor gc是新生代gc,full gc/major gc是老年代gc(注意区分
-        // gc日志中的Full GC，不是同一个概念)
-
-        // 新生代空间不够，直接进入老年代
         byte[] bytes1 = new byte[6 * _1M];
         bytes1 = null;
-        // 此处发生老年代gc
-        byte[] bytes2 = new byte[3 * _1M];
+        byte[] bytes2 = new byte[2 * _1M];
+//        byte[] bytes3 = new byte[2 * _1M];
+//        bytes3 = null;
+////        byte[] bytes4 = new byte[2 * _1M];
     }
 
 

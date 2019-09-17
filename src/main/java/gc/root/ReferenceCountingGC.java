@@ -1,4 +1,4 @@
-package what.is.garbage;
+package gc.root;
 
 public class ReferenceCountingGC {
     public static void main(String[] args) {

@@ -6,7 +6,7 @@ public class NewSizeDemo {
     // todo 为什么新生代默认就使用了1m左右的空间？
     public static void main(String[] args) {
         // Java HotSpot(TM) 64-Bit Server VM warning: NewSize (1536k) is greater than the MaxNewSize (1024k). A new max generation size of 1536k will be used.
-        //-Xmx20m -Xms20m -Xmn1m -XX:SurvivorRatio=2 -XX:+PrintGCDetails
+        //-Xmx20m -Xms20m -Xmn10m -XX:SurvivorRatio=2 -XX:+PrintGCDetails
 
 
         // -XX:PretenureSizeThreshold=3  设置年龄大小，达到该值就进入老年代。如果survivor区的同年龄对象已经等于或大于该区域的一半就算没达到年龄阈值也会进入老年代
