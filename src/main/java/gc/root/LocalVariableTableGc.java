@@ -3,10 +3,10 @@ package gc.root;
 public class LocalVariableTableGc {
     public static void main(String[] args) {
 //        localVar1();
-        localVar2();
+//        localVar2();
 //        localVar3();
 //        localVar4();
-//        localVar5();
+        localVar5();
     }
 
     // 以下所有方法都以printGC参数的结果来分析，不要受freeMemory API的值影响

@@ -9,7 +9,7 @@ public class Old {
 
     public static void main(String[] args) {
         // 老年代gc
-        fullGc();
+//        fullGc();
 
         // 大对象
 //        bigObject();
@@ -23,7 +23,7 @@ public class Old {
 //        ageThreshold();
 
         // 动态对象年龄
-//        dynamicAge();
+        dynamicAge();
     }
 
     private static void dynamicAge() {
